@@ -11,15 +11,15 @@ class Channel
     private $name;
     private $phone;
 
-    function __construct($name, $phone)
+    function __construct($name, $phone="")
     {
         $this->name = $name;
         $this->phone = $phone;
     }
 
-    public static function create($name, $phone)
+    public static function create($name, $phone="")
     {
-        if (empty($name) || empty($phone)) {
+        if (empty($name)) {
             return false;
         }
         if (is_null(self::$instance)) {
@@ -46,13 +46,17 @@ class Channel
             dump(redirect($find->url)->send());
         } elseif ($find->type == '1') {
             //需要加密等操作
-            $factory = new Factory();
-            $chl = $factory->createChannel(ucfirst(strtolower($find->class_name)), [
-                'channel_arr' => $find->toArray(),
-                'name' => $this->name,
-                'phone' => $this->phone
-            ]);
-            $chl->go();
+            if(empty($this->phone)){
+                throw new \think\exception\HttpException(404, '未登陆');
+            }else {
+                $factory = new Factory();
+                $chl = $factory->createChannel(ucfirst(strtolower($find->class_name)), [
+                    'channel_arr' => $find->toArray(),
+                    'name' => $this->name,
+                    'phone' => $this->phone
+                ]);
+                $chl->go();
+            }
         } elseif ($find->type == '2') {
             //自己写的
             //            dump(request());

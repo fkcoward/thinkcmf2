@@ -17,13 +17,16 @@ class Index
         $t = $request->get('t');
         $ch = $request->get('ch');
         $value = $request->get('value');
-        if ($t != '0' || $ch != '01') {
-            Record::throwOut();
+//        if ($t != '0' || $ch != '01') {
+//            Record::throwOut();
+//        }
+        $phone="";
+        if(!empty($value)) {
+            $phone = self::decrypt($value);
         }
-        $phone = self::decrypt($value);
-        if (empty($phone)) {
-            Record::throwOut();
-        }
+//        if (empty($phone)) {
+//            Record::throwOut();
+//        }
         if (empty(($c = \wap\index\controller\Channel::create($channel,$phone)))) {
             Record::throwOut();
         }
