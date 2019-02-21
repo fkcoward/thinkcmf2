@@ -1,0 +1,35 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th width="50">序号</th>
+            <th>接口名</th>
+            <th>中文名</th>
+            <th>手机号码</th>
+            <th>ip</th>
+            <th>时间</th>
+            <th>浏览器</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="list" item="vo" key="k">
+            <tr>
+                <td>{$k+1}</td>
+                <td>{$vo.path_info}</td>
+                <td>{$vo.nickname}</td>
+                <td>{$vo.phone}</td>
+                <td>{$vo.ip}</td>
+                <td>{:date('Y-m-d H:i:s',$vo['request_time'])}</td>
+                <td>{$vo.user_agent}</td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div class="pagination">{$page}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

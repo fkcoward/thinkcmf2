@@ -1,0 +1,75 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('index/listChannel')}">通道</a></li>
+        <li><a href="{:url('index/addChannel')}">添加</a></li>
+    </ul>
+    <form class="well form-inline margin-top-20" method="get" action="{:url('index/listChannel')}">
+        用户名:
+        <input type="text" class="form-control" name="keyword" style="width: 420px;"
+               value="{:input('request.keyword/s','')}" placeholder="请输入接口名或者地址">
+        <input type="submit" class="btn btn-primary" value="搜索"/>
+        <input type="reset" class="btn btn-danger" value="清空" />
+    </form>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th width="50">序号</th>
+            <th>创建时间</th>
+            <th>中文名</th>
+            <th>接口名</th>
+            <th>生效时间</th>
+            <th>失效时间</th>
+            <th>渠道地址</th>
+            <th>class</th>
+            <th>分类</th>
+            <th>状态</th>
+            <th width="140">{:lang('ACTIONS')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="list" item="vo" key="k">
+            <tr>
+                <td>{$k+1}</td>
+                <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                <td>{$vo.nickname}</td>
+                <td>{$vo.name}</td>
+                <td>{:date('Y-m-d H:i:s',$vo['begin_time'])}</td>
+                <td>{:date('Y-m-d H:i:s',$vo['end_time'])}</td>
+                <td><a href="{$vo['url']}" target="_blank">{$vo['url']}</a></td>
+                <td>{$vo['class_name']}</td>
+                <td>
+                    <switch name="vo.type">
+                        <case value="0">
+                            <span class="label label-danger">直接H5</span>
+                        </case>
+                        <case value="1">
+                            <span class="label label-success">对接H5</span>
+                        </case>
+                        <case value="2">
+                            <span class="label label-warning">api</span>
+                        </case>
+                    </switch>
+                </td>
+                <td>
+                    <switch name="vo.flag">
+                        <case value="0">
+                            <span class="label label-danger">关闭中</span>
+                        </case>
+                        <case value="1">
+                            <span class="label label-success">正常</span>
+                        </case>
+                    </switch>
+                </td>
+                <td><a class="btn btn-xs btn-primary" href="{:url('index/editChannel',array('id'=>$vo['id']))}">修改</a></td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div class="pagination">{$page}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>
