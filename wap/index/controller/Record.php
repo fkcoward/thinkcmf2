@@ -33,7 +33,7 @@ class Record
 
     public static function throwOut()
     {
-        self::record();
+//        self::record();
         throw new \think\exception\HttpException(404, '页面不存在');
     }
 }

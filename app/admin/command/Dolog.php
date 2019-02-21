@@ -20,6 +20,7 @@ class Dolog extends Command
     {
         $output->writeln("fffff");
         $this->doMyLog($output);
+        $this->deleteLog();
     }
 
     private function doMyLog($output)
@@ -32,9 +33,18 @@ class Dolog extends Command
         $list=Db::name('access_log_today')->where('request_time','between',[$startTime,$endTime])->group('path_info')->field("path_info,count(*) as num")->select();
         $insert_data=['begin'=>$startTime,'end'=>$endTime];
         foreach ($list as $value){
+            if(in_array($value['path_info'],['/','favicon.ico'])){
+                continue;
+            }
             $insert_data['path_info']=$value['path_info'];
             $insert_data['num']=$value['num'];
             Db::name('access_log_count')->insert($insert_data);
         }
+    }
+
+    private function deleteLog()
+    {
+        $time=strtotime("-1 day");
+        Db::name('access_log_today')->where('request_time','<',$time)->delete();
     }
 }
