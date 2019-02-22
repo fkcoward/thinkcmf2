@@ -1,0 +1,99 @@
+<include file="public@header"/>
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 900px;height: {$height}px;"></div>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+    <div id="bing" style="width: 900px;height: 500px;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: '一天内访问量',
+                subtext: ''
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['一天内']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                data: {$y_data}
+            },
+            series: [
+
+                {
+                    name: '一天内',
+                    type: 'bar',
+                    data: {$data}
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+    <script type="text/javascript">
+        var bingChart = echarts.init(document.getElementById('bing'));
+        var option = {
+            title : {
+                text: '一天内访问占比',
+                subtext: '当天数据',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: {$y_data}
+            },
+            series : [
+                {
+                    name: '当天占比',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:{$bing_data},
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        bingChart.setOption(option);
+    </script>
+</div>
+</body>
+</html>
