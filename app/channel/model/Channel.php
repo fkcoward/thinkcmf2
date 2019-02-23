@@ -8,7 +8,7 @@ use think\Model;
 class Channel extends Model
 {
     protected $autoWriteTimestamp = true;
-    protected $table="fsd_channel";
+    protected $table = "fsd_channel";
 
     public function addChannel($data)
     {
@@ -17,6 +17,9 @@ class Channel extends Model
         }
         $data['begin_time'] = empty($data['begin_time']) ? time() : strtotime($data['begin_time']);
         $data['end_time'] = empty($data['end_time']) ? strtotime('2022-02-02') : strtotime($data['end_time']);
+        if (isset($data['url'])) {
+            $data['url'] = htmlspecialchars_decode($data['url']);
+        }
         $this->data($data)->allowField(true)->save();
         return $this->id;
     }
@@ -41,16 +44,16 @@ class Channel extends Model
 
     public function getChannelById($id)
     {
-        $find=$this->where("id",$id)->find();
+        $find = $this->where("id", $id)->find();
         return $find->toArray();
 
     }
 
     public function saveChannel($data)
     {
-        $id=$data['id'];
+        $id = $data['id'];
         unset($data['id']);
-        $i=$this->allowField(true)->save($data,['id'=>$id]);
+        $i = $this->allowField(true)->save($data, ['id' => $id]);
         return $i;
     }
 }
