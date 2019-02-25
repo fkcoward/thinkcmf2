@@ -12,7 +12,8 @@ class Allinpay extends Basechannel
     private $appId = "TLmshbm";
     private $merchantId = "008310148160013";
     private $dataPath=APP_PATH . "data" . DIRECTORY_SEPARATOR . "allinpay" . DIRECTORY_SEPARATOR;
-    private $TLCert = "TLCert_test.cer";
+    private $TLCert = "allinpay_cer.pem";
+//    private $TLCert = "TLCert_test.cer";
     private $priKey = "allinpay_key.pem";
     private $priKeyNum = "316093";
 
@@ -55,6 +56,7 @@ class Allinpay extends Basechannel
         $signstr = trim($signstr, '&');
         $arr['signMsg']=base64_sign_with_pri_sha1($signstr,$this->dataPath.$this->priKey,$this->priKeyNum);
         $ret=request_post($this->regUrl,$arr);
+        file_put_contents($this->dataPath."reg.txt",$this->phone." : ".$ret.PHP_EOL,8);
         parse_str($ret,$output);
         if(isset($output['userId'])&&!empty($output['userId'])){
             Db::name('chl_allinpay')->insert(['phone'=>$this->phone,'uuid'=>$output['userId'],'addtime'=>date("Y-m-d H:i:s")]);
