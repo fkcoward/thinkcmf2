@@ -2,6 +2,7 @@
 
 namespace app\channel\controller;
 
+use app\channel\model\Category;
 use app\channel\model\Channel;
 use cmf\controller\AdminBaseController;
 use think\Db;
@@ -141,5 +142,23 @@ class IndexController extends AdminBaseController
             '对外地址'
         ];
         arrayToExcel($head, $list);
+    }
+
+    public function addCategory()
+    {
+        if(request()->isPost()){
+            $result = $this->validate(request()->param(), 'app\channel\validate\CategoryValidate');
+            if (true !== $result) {
+                $this->error($result);
+            }
+            $cat = new Category();
+            if ($cat->addCategory($this->request->param())) {
+                $this->success("添加成功", url("index/listChannel"));
+            } else {
+                $this->error("添加失败");
+            }
+        }else{
+            return $this->fetch();
+        }
     }
 }
